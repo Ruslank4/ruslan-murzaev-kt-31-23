@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -13,9 +12,9 @@ namespace RuslanMurzaevKt_31_23.Migrations
                 name: "cd_group",
                 columns: table => new
                 {
-                    group_id = table.Column<int>(type: "integer", nullable: false, comment: "Идентификатор записи группы")
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    c_group_name = table.Column<string>(type: "varchar", maxLength: 100, nullable: false, comment: "Название группы")
+                    group_id = table.Column<int>(type: "int", nullable: false, comment: "Идентификатор записи группы")
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    c_group_name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false, comment: "Название группы")
                 },
                 constraints: table =>
                 {
@@ -26,12 +25,12 @@ namespace RuslanMurzaevKt_31_23.Migrations
                 name: "cd_student",
                 columns: table => new
                 {
-                    student_id = table.Column<int>(type: "integer", nullable: false, comment: "Идентификатор записи студента")
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    c_student_firstname = table.Column<string>(type: "varchar", maxLength: 100, nullable: false, comment: "Имя студента"),
-                    c_student_lastname = table.Column<string>(type: "varchar", maxLength: 100, nullable: false, comment: "Фамилия студента"),
-                    c_student_middlename = table.Column<string>(type: "varchar", maxLength: 100, nullable: false, comment: "Отчество студента"),
-                    f_group_id = table.Column<int>(type: "integer", nullable: false, comment: "Идентификатор группы")
+                    student_id = table.Column<int>(type: "int", nullable: false, comment: "Идентификатор записи студента")
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    c_student_firstname = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false, comment: "Имя студента"),
+                    c_student_lastname = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false, comment: "Фамилия студента"),
+                    c_student_middlename = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false, comment: "Отчество студента"),
+                    f_group_id = table.Column<int>(type: "int", nullable: false, comment: "Идентификатор группы")
                 },
                 constraints: table =>
                 {
