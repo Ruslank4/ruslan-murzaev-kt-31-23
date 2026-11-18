@@ -21,6 +21,86 @@ namespace RuslanMurzaevKt_31_23.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("DisciplineStudent", b =>
+                {
+                    b.Property<int>("DisciplinesDisciplineId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentsStudentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DisciplinesDisciplineId", "StudentsStudentId");
+
+                    b.HasIndex("StudentsStudentId");
+
+                    b.ToTable("cd_student_discipline", (string)null);
+                });
+
+            modelBuilder.Entity("RuslanMurzaevKt_31_23.Models.Discipline", b =>
+                {
+                    b.Property<int>("DisciplineId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("discipline_id")
+                        .HasComment("Идентификатор дисциплины");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DisciplineId"), 1L, 1);
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("b_is_deleted")
+                        .HasComment("Признак удаления");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)")
+                        .HasColumnName("c_discipline_name")
+                        .HasComment("Название дисциплины");
+
+                    b.HasKey("DisciplineId")
+                        .HasName("pk_cd_discipline_discipline_id");
+
+                    b.ToTable("cd_discipline", (string)null);
+                });
+
+            modelBuilder.Entity("RuslanMurzaevKt_31_23.Models.Grade", b =>
+                {
+                    b.Property<int>("GradeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("grade_id")
+                        .HasComment("Идентификатор оценки");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GradeId"), 1L, 1);
+
+                    b.Property<int>("DisciplineId")
+                        .HasColumnType("int")
+                        .HasColumnName("f_discipline_id")
+                        .HasComment("Идентификатор дисциплины");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int")
+                        .HasColumnName("f_student_id")
+                        .HasComment("Идентификатор студента");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("int")
+                        .HasColumnName("c_grade_value")
+                        .HasComment("Значение оценки");
+
+                    b.HasKey("GradeId")
+                        .HasName("pk_cd_grade_grade_id");
+
+                    b.HasIndex(new[] { "DisciplineId" }, "idx_cd_grade_fk_f_discipline_id");
+
+                    b.HasIndex(new[] { "StudentId" }, "idx_cd_grade_fk_f_student_id");
+
+                    b.ToTable("cd_grade", (string)null);
+                });
+
             modelBuilder.Entity("RuslanMurzaevKt_31_23.Models.Group", b =>
                 {
                     b.Property<int>("GroupId")
@@ -31,17 +111,66 @@ namespace RuslanMurzaevKt_31_23.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GroupId"), 1L, 1);
 
-                    b.Property<string>("GroupName")
+                    b.Property<int>("Course")
+                        .HasColumnType("int")
+                        .HasColumnName("c_group_course")
+                        .HasComment("Курс");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("b_is_deleted")
+                        .HasComment("Признак удаления");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)")
                         .HasColumnName("c_group_name")
                         .HasComment("Название группы");
 
+                    b.Property<int>("SpecialtyId")
+                        .HasColumnType("int")
+                        .HasColumnName("f_specialty_id")
+                        .HasComment("Идентификатор специальности");
+
                     b.HasKey("GroupId")
                         .HasName("pk_cd_group_group_id");
 
+                    b.HasIndex(new[] { "SpecialtyId" }, "idx_cd_group_fk_f_specialty_id");
+
                     b.ToTable("cd_group", (string)null);
+                });
+
+            modelBuilder.Entity("RuslanMurzaevKt_31_23.Models.Specialty", b =>
+                {
+                    b.Property<int>("SpecialtyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("specialty_id")
+                        .HasComment("Идентификатор специальности");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SpecialtyId"), 1L, 1);
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasColumnName("c_specialty_code")
+                        .HasComment("Код специальности");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)")
+                        .HasColumnName("c_specialty_title")
+                        .HasComment("Название специальности");
+
+                    b.HasKey("SpecialtyId")
+                        .HasName("pk_cd_specialty_specialty_id");
+
+                    b.ToTable("cd_specialty", (string)null);
                 });
 
             modelBuilder.Entity("RuslanMurzaevKt_31_23.Models.Student", b =>
@@ -66,19 +195,19 @@ namespace RuslanMurzaevKt_31_23.Migrations
                         .HasColumnName("f_group_id")
                         .HasComment("Идентификатор группы");
 
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("b_is_deleted")
+                        .HasComment("Признак удаления");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)")
                         .HasColumnName("c_student_lastname")
                         .HasComment("Фамилия студента");
-
-                    b.Property<string>("MiddleName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("c_student_middlename")
-                        .HasComment("Отчество студента");
 
                     b.HasKey("StudentId")
                         .HasName("pk_cd_student_student_id");
@@ -88,16 +217,84 @@ namespace RuslanMurzaevKt_31_23.Migrations
                     b.ToTable("cd_student", (string)null);
                 });
 
+            modelBuilder.Entity("DisciplineStudent", b =>
+                {
+                    b.HasOne("RuslanMurzaevKt_31_23.Models.Discipline", null)
+                        .WithMany()
+                        .HasForeignKey("DisciplinesDisciplineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RuslanMurzaevKt_31_23.Models.Student", null)
+                        .WithMany()
+                        .HasForeignKey("StudentsStudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("RuslanMurzaevKt_31_23.Models.Grade", b =>
+                {
+                    b.HasOne("RuslanMurzaevKt_31_23.Models.Discipline", "Discipline")
+                        .WithMany("Grades")
+                        .HasForeignKey("DisciplineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_f_discipline_id");
+
+                    b.HasOne("RuslanMurzaevKt_31_23.Models.Student", "Student")
+                        .WithMany("Grades")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_f_student_id");
+
+                    b.Navigation("Discipline");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("RuslanMurzaevKt_31_23.Models.Group", b =>
+                {
+                    b.HasOne("RuslanMurzaevKt_31_23.Models.Specialty", "Specialty")
+                        .WithMany("Groups")
+                        .HasForeignKey("SpecialtyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_f_specialty_id");
+
+                    b.Navigation("Specialty");
+                });
+
             modelBuilder.Entity("RuslanMurzaevKt_31_23.Models.Student", b =>
                 {
                     b.HasOne("RuslanMurzaevKt_31_23.Models.Group", "Group")
-                        .WithMany()
+                        .WithMany("Students")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_f_group_id");
 
                     b.Navigation("Group");
+                });
+
+            modelBuilder.Entity("RuslanMurzaevKt_31_23.Models.Discipline", b =>
+                {
+                    b.Navigation("Grades");
+                });
+
+            modelBuilder.Entity("RuslanMurzaevKt_31_23.Models.Group", b =>
+                {
+                    b.Navigation("Students");
+                });
+
+            modelBuilder.Entity("RuslanMurzaevKt_31_23.Models.Specialty", b =>
+                {
+                    b.Navigation("Groups");
+                });
+
+            modelBuilder.Entity("RuslanMurzaevKt_31_23.Models.Student", b =>
+                {
+                    b.Navigation("Grades");
                 });
 #pragma warning restore 612, 618
         }

@@ -20,13 +20,41 @@ namespace RuslanMurzaevKt_31_23.Database.Configurations
                 .HasColumnName("group_id")
                 .HasComment("Идентификатор записи группы");
 
-            builder.Property(p => p.GroupName)
+            builder.Property(p => p.Name)
                 .IsRequired()
                 .HasColumnName("c_group_name")
                 .HasColumnType(ColumnType.String).HasMaxLength(100)
                 .HasComment("Название группы");
 
-            builder.ToTable(TableName);
+            builder.Property(p => p.Course)
+                .IsRequired()
+                .HasColumnName("c_group_course")
+                .HasColumnType(ColumnType.Int)
+                .HasComment("Курс");
+
+            builder.Property(p => p.IsDeleted)
+                .IsRequired()
+                .HasColumnName("b_is_deleted")
+                .HasColumnType(ColumnType.Bool)
+                .HasDefaultValue(false)
+                .HasComment("Признак удаления");
+
+            builder.Property(p => p.SpecialtyId)
+                .IsRequired()
+                .HasColumnName("f_specialty_id")
+                .HasComment("Идентификатор специальности");
+
+            builder.ToTable(TableName)
+                .HasOne(p => p.Specialty)
+                .WithMany(s => s.Groups)
+                .HasForeignKey(p => p.SpecialtyId)
+                .HasConstraintName("fk_f_specialty_id")
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.ToTable(TableName)
+                .HasIndex(p => p.SpecialtyId, $"idx_{TableName}_fk_f_specialty_id");
+
+            builder.Navigation(p => p.Specialty).AutoInclude();
         }
     }
 }

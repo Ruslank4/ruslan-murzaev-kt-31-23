@@ -32,10 +32,12 @@ namespace RuslanMurzaevKt_31_23.Database.Configurations
                 .HasColumnType(ColumnType.String).HasMaxLength(100)
                 .HasComment("Фамилия студента");
 
-            builder.Property(p => p.MiddleName)
-                .HasColumnName("c_student_middlename")
-                .HasColumnType(ColumnType.String).HasMaxLength(100)
-                .HasComment("Отчество студента");
+            builder.Property(p => p.IsDeleted)
+                .IsRequired()
+                .HasColumnName("b_is_deleted")
+                .HasColumnType(ColumnType.Bool)
+                .HasDefaultValue(false)
+                .HasComment("Признак удаления");
 
             builder.Property(p => p.GroupId)
                 .IsRequired()
@@ -44,16 +46,20 @@ namespace RuslanMurzaevKt_31_23.Database.Configurations
 
             builder.ToTable(TableName)
                 .HasOne(p => p.Group)
-                .WithMany()
+                .WithMany(g => g.Students)
                 .HasForeignKey(p => p.GroupId)
                 .HasConstraintName("fk_f_group_id")
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.ToTable(TableName)
+                .HasMany(s => s.Disciplines)
+                .WithMany(d => d.Students)
+                .UsingEntity(j => j.ToTable("cd_student_discipline"));
+
+            builder.ToTable(TableName)
                 .HasIndex(p => p.GroupId, $"idx_{TableName}_fk_f_group_id");
 
-            builder.Navigation(p => p.Group)
-                .AutoInclude();
+            builder.Navigation(p => p.Group).AutoInclude();
         }
     }
 }

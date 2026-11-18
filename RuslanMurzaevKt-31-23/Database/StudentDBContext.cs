@@ -6,13 +6,19 @@ namespace RuslanMurzaevKt_31_23.Database
 {
     public class StudentDbContext : DbContext
     {
-        DbSet<Student> Students { get; set; }
-        DbSet<Group> Groups { get; set; }
+        public DbSet<Student> Students { get; set; }
+        public DbSet<Group> Groups { get; set; }
+        public DbSet<Specialty> Specialtys { get; set; }
+        public DbSet<Discipline> Disciplines { get; set; }
+        public DbSet<Grade> Grades { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new StudentConfiguration());
             modelBuilder.ApplyConfiguration(new GroupConfiguration());
+            modelBuilder.ApplyConfiguration(new SpecialtyConfiguration());
+            modelBuilder.ApplyConfiguration(new DisciplineConfiguration());
+            modelBuilder.ApplyConfiguration(new GradeConfiguration());
         }
 
         public StudentDbContext(DbContextOptions<StudentDbContext> options) : base(options)
