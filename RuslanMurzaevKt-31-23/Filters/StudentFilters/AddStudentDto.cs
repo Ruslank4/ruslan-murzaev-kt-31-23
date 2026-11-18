@@ -1,0 +1,10 @@
+﻿namespace RuslanMurzaevKt_31_23.Filters.StudentFilters
+{
+    public class AddStudentDto
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public int GroupId { get; set; }
+        public string SpecialtyTitle { get; set; }
+    }
+}
